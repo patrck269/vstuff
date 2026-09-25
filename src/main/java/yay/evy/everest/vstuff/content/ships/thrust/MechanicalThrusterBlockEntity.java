@@ -94,7 +94,7 @@ public class MechanicalThrusterBlockEntity extends KineticBlockEntity implements
         }
 
         float obstructionEffect = calculateObstructionEffect(); // 0..1
-        float powerPercentage = Math.min(Math.abs(speed) / MAX_SPEED, 1f); // scale rotation to 0..1
+        float powerPercentage = Math.abs(speed) / MAX_SPEED;
 
         float thrustMultiplier = VStuffConfigs.server().thrustMultiplier.getF();
 
