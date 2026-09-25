@@ -52,7 +52,7 @@ public class VServer extends ConfigBase {
 
         static String thruster = "Values for the Mechanical Thruster";
         static String thrusterMultiplier = "The multiplier for the amount of thrust produced";
-        static String thrusterMaxSpeed = "The maximum speed of the thruster";
+        static String thrusterMaxSpeed = "Unused. Thruster force is applied in full at any ship speed.";
         static String thrusterMaxPushDistance = "The maximum distance the air current from the thruster can push or pull.";
 
         static String physPulley = "Values for the Phys Pulley";
