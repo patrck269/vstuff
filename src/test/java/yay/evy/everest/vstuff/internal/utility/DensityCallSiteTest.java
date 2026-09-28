@@ -41,4 +41,19 @@ class DensityCallSiteTest {
         assertTrue(config.contains("PropellerBearingStressMixin"));
         assertTrue(!source.contains("PropellerController"));
     }
+
+    @Test
+    void kineticDensityRefreshMixinDirtiesNetwork() throws Exception {
+        String source = Files.readString(Path.of(
+                "src/main/java/yay/evy/everest/vstuff/internal/mixins/KineticDensityRefreshMixin.java"));
+        String config = Files.readString(Path.of("src/main/resources/vstuff.mixins.json"));
+        assertTrue(source.contains("networkDirty"));
+        assertTrue(source.contains("ratioMoved"));
+        assertTrue(source.contains("EncasedFanBlockEntity"));
+        assertTrue(source.contains("PropellerBearingBlockEntity"));
+        assertTrue(source.contains("MechanicalThrusterBlockEntity"));
+        assertTrue(source.contains("tick"));
+        assertTrue(config.contains("KineticDensityRefreshMixin"));
+        assertTrue(!source.contains("AirDensity.scale"));
+    }
 }

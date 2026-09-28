@@ -9,8 +9,12 @@ import org.valkyrienskies.mod.common.VSGameUtilsKt;
 import org.valkyrienskies.mod.common.config.DimensionParametersResolver;
 
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public final class AirDensity {
+    private static final double RATIO_MOVE_THRESHOLD = 0.005;
+    private static final Map<Object, Double> LAST_RATIOS = new WeakHashMap<>();
     private static final double DEFAULT_SEA_LEVEL = 62.0;
     private static final double DEFAULT_MAX_Y = 962.0;
     private static final double DEFAULT_GRAVITY = 10.0;
@@ -38,6 +42,16 @@ public final class AirDensity {
 
     public static float scale(float seaLevelValue, double ratio) {
         return (float) (seaLevelValue * ratio);
+    }
+
+    public static boolean ratioMoved(Object key, double ratio) {
+        synchronized (LAST_RATIOS) {
+            Double previous = LAST_RATIOS.put(key, ratio);
+            if (previous == null) {
+                return false;
+            }
+            return Math.abs(previous - ratio) > RATIO_MOVE_THRESHOLD;
+        }
     }
 
     public static double ratioAt(Level level, BlockPos pos) {

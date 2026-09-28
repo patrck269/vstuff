@@ -3,6 +3,8 @@ package yay.evy.everest.vstuff.internal.utility;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AirDensityTest {
     @Test
@@ -43,6 +45,16 @@ class AirDensityTest {
     @Test
     void missingLevelReturnsOne() {
         assertEquals(1.0, AirDensity.ratioAt(null, null), 0.0);
+    }
+
+    @Test
+    void ratioMovedIgnoresFirstObservationUntilThreshold() {
+        Object key = new Object();
+        assertFalse(AirDensity.ratioMoved(key, 0.0));
+        assertFalse(AirDensity.ratioMoved(key, 0.005));
+        assertTrue(AirDensity.ratioMoved(key, 0.015));
+        assertFalse(AirDensity.ratioMoved(key, 0.015));
+        assertFalse(AirDensity.ratioMoved(new Object(), 0.2));
     }
 
     @Test
