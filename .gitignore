@@ -20,3 +20,6 @@ classes/
 *.launch
 
 src/generated/resources/.cache/
+
+.worktrees/
+
