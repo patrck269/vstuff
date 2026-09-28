@@ -44,4 +44,12 @@ class AirDensityTest {
     void missingLevelReturnsOne() {
         assertEquals(1.0, AirDensity.ratioAt(null, null), 0.0);
     }
+
+    @Test
+    void overworldCurveMatchesValkyrienSkies() {
+        assertEquals(1.0, AirDensity.standardAtmosphereRatio(62.0), 0.01);
+        assertEquals(0.58, AirDensity.standardAtmosphereRatio(128.0), 0.01);
+        assertEquals(0.15, AirDensity.standardAtmosphereRatio(256.0), 0.01);
+        assertEquals(0.0, AirDensity.standardAtmosphereRatio(1000.0), 0.01);
+    }
 }
