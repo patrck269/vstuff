@@ -19,6 +19,7 @@ import org.valkyrienskies.mod.common.util.VectorConversionsMCKt;
 import com.simibubi.create.content.kinetics.fan.IAirCurrentSource;
 import com.simibubi.create.content.kinetics.fan.AirCurrent;
 import yay.evy.everest.vstuff.infrastructure.config.VStuffConfigs;
+import yay.evy.everest.vstuff.internal.utility.AirDensity;
 import yay.evy.everest.vstuff.internal.utility.AttachmentUtils;
 import yay.evy.everest.vstuff.internal.utility.ShipUtils;
 
@@ -100,9 +101,15 @@ public class MechanicalThrusterBlockEntity extends KineticBlockEntity implements
 
         float softPower = (float) java.lang.Math.pow(powerPercentage, 1.2);
 
-        float thrust = BASE_MAX_THRUST * thrustMultiplier * softPower * obstructionEffect;
-
+        float seaLevelThrust = BASE_MAX_THRUST * thrustMultiplier * softPower * obstructionEffect;
+        float thrust = AirDensity.scale(seaLevelThrust, AirDensity.ratioAt(level, worldPosition));
         thrusterData.setThrust(thrust);
+    }
+
+    @Override
+    public float calculateStressApplied() {
+        float seaLevelStress = super.calculateStressApplied();
+        return AirDensity.scale(seaLevelStress, AirDensity.ratioAt(getLevel(), getBlockPos()));
     }
 
     @Override
