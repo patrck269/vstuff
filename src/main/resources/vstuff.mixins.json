@@ -5,7 +5,8 @@
   "refmap": "vstuff.refmap.json",
   "mixins": [
     "ShipAssemblyMixin",
-    "EncasedFanStressMixin"
+    "EncasedFanStressMixin",
+    "PropellerBearingStressMixin"
   ],
   "injectors": {
     "defaultRequire": 1

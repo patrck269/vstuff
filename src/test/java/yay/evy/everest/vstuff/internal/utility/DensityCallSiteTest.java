@@ -28,4 +28,17 @@ class DensityCallSiteTest {
         assertTrue(source.contains("AirDensity.ratioAt"));
         assertTrue(config.contains("EncasedFanStressMixin"));
     }
+
+    @Test
+    void propellerBearingMixinScalesStress() throws Exception {
+        String source = Files.readString(Path.of(
+                "src/main/java/yay/evy/everest/vstuff/internal/mixins/PropellerBearingStressMixin.java"));
+        String config = Files.readString(Path.of("src/main/resources/vstuff.mixins.json"));
+        assertTrue(source.contains("PropellerBearingBlockEntity"));
+        assertTrue(source.contains("calculateStressApplied"));
+        assertTrue(source.contains("AirDensity.scale"));
+        assertTrue(source.contains("AirDensity.ratioAt"));
+        assertTrue(config.contains("PropellerBearingStressMixin"));
+        assertTrue(!source.contains("PropellerController"));
+    }
 }
