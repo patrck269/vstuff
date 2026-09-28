@@ -39,4 +39,9 @@ class AirDensityTest {
         assertEquals(50.0f, AirDensity.scale(100.0f, 0.5), 1.0e-4f);
         assertEquals(100_000.0f, AirDensity.scale(100_000.0f, 1.0), 1.0e-3f);
     }
+
+    @Test
+    void missingLevelReturnsOne() {
+        assertEquals(1.0, AirDensity.ratioAt(null, null), 0.0);
+    }
 }
