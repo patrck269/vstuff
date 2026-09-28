@@ -43,11 +43,11 @@ class DensityCallSiteTest {
     }
 
     @Test
-    void kineticDensityRefreshMixinDirtiesNetwork() throws Exception {
+    void kineticDensityRefreshMixinResamplesStress() throws Exception {
         String source = Files.readString(Path.of(
                 "src/main/java/yay/evy/everest/vstuff/internal/mixins/KineticDensityRefreshMixin.java"));
         String config = Files.readString(Path.of("src/main/resources/vstuff.mixins.json"));
-        assertTrue(source.contains("networkDirty"));
+        assertTrue(source.contains("updateStressFor"));
         assertTrue(source.contains("ratioMoved"));
         assertTrue(source.contains("EncasedFanBlockEntity"));
         assertTrue(source.contains("PropellerBearingBlockEntity"));

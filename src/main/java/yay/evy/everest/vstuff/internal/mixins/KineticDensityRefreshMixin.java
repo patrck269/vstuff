@@ -16,15 +16,16 @@ public abstract class KineticDensityRefreshMixin {
 
     @Inject(method = "tick", at = @At("RETURN"), remap = false)
     private void vstuff$refreshStressWhenAirDensityMoves(CallbackInfo ci) {
-        Object self = this;
-        if (!(self instanceof EncasedFanBlockEntity)
-                && !(self instanceof MechanicalThrusterBlockEntity)
-                && !self.getClass().getName().equals(PROPELLER_BEARING)) {
+        if (!((Object) this instanceof EncasedFanBlockEntity)
+                && !((Object) this instanceof MechanicalThrusterBlockEntity)
+                && !((Object) this).getClass().getName().equals(PROPELLER_BEARING)) {
             return;
         }
-        KineticBlockEntity kinetic = (KineticBlockEntity) self;
-        if (AirDensity.ratioMoved(this, AirDensity.ratioAt(kinetic.getLevel(), kinetic.getBlockPos()))) {
-            kinetic.networkDirty = true;
+        KineticBlockEntity self = (KineticBlockEntity) (Object) this;
+        if (AirDensity.ratioMoved(this, AirDensity.ratioAt(self.getLevel(), self.getBlockPos()))
+                && self.hasNetwork()) {
+            float stress = self.calculateStressApplied();
+            self.getOrCreateNetwork().updateStressFor(self, stress);
         }
     }
 }
