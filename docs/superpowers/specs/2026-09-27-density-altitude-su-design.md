@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Fans and propellers spend stress units as if the air were always sea-level air. A fan at 1000 RPM should cost far more stress at sea level than at Y=1000. Thrust from the vstuff mechanical thruster should drop the same way. Configured stress numbers, and the thruster's current thrust formula, are the sea-level values.
+Fans and the mechanical thruster spend stress units as if the air were always sea-level air. A fan at 1000 RPM should cost far more stress at sea level than at Y=1000, and thruster thrust should drop the same way. A Clockwork propeller is the opposite: blade thrust already falls with density, so the stress to hold altitude must rise as the air thins. Configured stress numbers, and the thruster's thrust formula, are the sea-level values.
 
 ## Density ratio
 
@@ -23,7 +23,7 @@ The server and the client both use this helper, so the goggles and the shaft agr
 The shaft's RPM stays the real RPM. Other machines on that shaft are unchanged.
 
 - **Create encased fan.** The stress it adds to the shaft is its sea-level stress cost times the ratio. vstuff mixins `EncasedFanBlockEntity` at the stress calculation. Stream length and processing (washing, blasting, smoking, haunting) stay as they are.
-- **Clockwork propeller bearings** (plain, brass, and jury-rigged). The stress each adds is its sea-level stress cost times the ratio. vstuff mixins the block entity those blocks use. They share `PropellerBearingBlockEntity` unless a variant has its own. Thrust stays on Clockwork's existing density scaling and is not scaled again.
+- **Clockwork propeller bearings** (plain, brass, and jury-rigged). Blade thrust scales as density × speed², so the speed that holds a fixed thrust scales as 1/sqrt(ratio). The stress each bearing adds is its sea-level stress divided by the ratio, and the SU to hold that thrust therefore rises as the air thins. Ratio 0 (the column is exhausted near Y=962, so Y≈1500 is vacuum) uses a finite floor that still costs more than the Y≈256 sample, not 0, NaN, or infinity. vstuff mixins `PropellerBearingBlockEntity`. Thrust stays on Clockwork's existing density scaling and is not scaled again.
 - **vstuff mechanical thruster.** Stress and thrust both multiply by the ratio. The thrust formula stays top thrust, times the config multiplier, times the speed curve, times exhaust clearance, and then times the ratio. `MechanicalThrusterBlockEntity` applies both.
 
 ## Failure behavior
@@ -37,10 +37,11 @@ A pure function owns the ratio and the two multiplications. Its tests do not nee
 - Sea level is 1. Below sea level stays 1.
 - Overworld samples, using the densities the current Valkyrien Skies build returns, are about 0.58 at Y=128, about 0.15 at Y=256, and about 0 at Y=1000, each within 0.01.
 - A missing air lookup returns 1.
-- Sea-level stress times the ratio is the stress added to the shaft.
+- Sea-level stress times the ratio is the stress a fan or the thruster adds to the shaft.
+- Propeller stress is the sea-level stress divided by the ratio. Hover SU, that stress times 1/sqrt(ratio), is higher at each thinner positive overworld sample. Ratio 0 stays finite and costs more than the Y≈256 sample.
 - Sea-level thruster thrust times the ratio is the thrust that gets applied.
 
-The fan mixin, the propeller mixin, and the thruster call that function. Tests assert those call sites. Clockwork's thrust math is not modified.
+The fan mixin and the thruster multiply by the ratio. The propeller mixin divides by it. Tests assert those call sites. Clockwork's thrust math is not modified.
 
 ## Out of scope
 

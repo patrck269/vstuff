@@ -15,6 +15,6 @@ public abstract class PropellerBearingStressMixin extends KineticBlockEntity {
 
     @Inject(method = "calculateStressApplied", at = @At("RETURN"), cancellable = true, remap = false)
     private void vstuff$scalePropellerStress(CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue(AirDensity.scale(cir.getReturnValue(), AirDensity.ratioAt(getLevel(), getBlockPos())));
+        cir.setReturnValue(AirDensity.propellerStress(cir.getReturnValue(), AirDensity.ratioAt(getLevel(), getBlockPos())));
     }
 }

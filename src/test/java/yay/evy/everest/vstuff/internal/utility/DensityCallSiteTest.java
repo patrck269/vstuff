@@ -15,6 +15,7 @@ class DensityCallSiteTest {
         assertTrue(source.contains("AirDensity.scale"));
         assertTrue(source.contains("AirDensity.ratioAt"));
         assertTrue(source.contains("calculateStressApplied"));
+        assertTrue(!source.contains("propellerStress"));
     }
 
     @Test
@@ -26,6 +27,7 @@ class DensityCallSiteTest {
         assertTrue(source.contains("calculateStressApplied"));
         assertTrue(source.contains("AirDensity.scale"));
         assertTrue(source.contains("AirDensity.ratioAt"));
+        assertTrue(!source.contains("propellerStress"));
         assertTrue(config.contains("EncasedFanStressMixin"));
     }
 
@@ -36,8 +38,9 @@ class DensityCallSiteTest {
         String config = Files.readString(Path.of("src/main/resources/vstuff.mixins.json"));
         assertTrue(source.contains("PropellerBearingBlockEntity"));
         assertTrue(source.contains("calculateStressApplied"));
-        assertTrue(source.contains("AirDensity.scale"));
+        assertTrue(source.contains("AirDensity.propellerStress"));
         assertTrue(source.contains("AirDensity.ratioAt"));
+        assertTrue(!source.contains("AirDensity.scale"));
         assertTrue(config.contains("PropellerBearingStressMixin"));
         assertTrue(!source.contains("PropellerController"));
     }
