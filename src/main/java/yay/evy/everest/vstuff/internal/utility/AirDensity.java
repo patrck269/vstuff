@@ -26,9 +26,6 @@ public final class AirDensity {
     private static final double[] LAYER_DENSITY = {1.225, 0.36391, 0.08803, 0.01322, 0.00143, 8.6e-4, 6.4e-5};
     private static final double[] LAYER_TEMPERATURE = {288.15, 216.65, 216.65, 228.65, 270.65, 270.65, 214.65};
     private static final double[] LAYER_LAPSE = {0.0065, 0.0, -0.001, -0.0028, 0.0, 0.0028, 0.002};
-    // Below the Y≈1000 sample (0.00004/1.225 ≈ 3.3e-5) and below the last non-zero VS density
-    // (~5.4e-6 at the 84852 m cutoff). Exact zero uses this so vacuum stays finite and costs more.
-    private static final double PROPELLER_MIN_RATIO = 1.0e-6;
 
     private AirDensity() {}
 
@@ -45,18 +42,6 @@ public final class AirDensity {
 
     public static float scale(float seaLevelValue, double ratio) {
         return (float) (seaLevelValue * ratio);
-    }
-
-    public static float propellerStress(float seaLevelStress, double ratio) {
-        if (!Float.isFinite(seaLevelStress) || Double.isNaN(ratio) || ratio < 0.0 || ratio >= 1.0) {
-            return seaLevelStress;
-        }
-        double effective = ratio < PROPELLER_MIN_RATIO ? PROPELLER_MIN_RATIO : ratio;
-        float scaled = (float) (seaLevelStress / effective);
-        if (!Float.isFinite(scaled)) {
-            return Math.copySign(Float.MAX_VALUE, seaLevelStress);
-        }
-        return scaled;
     }
 
     public static boolean ratioMoved(Object key, double ratio) {

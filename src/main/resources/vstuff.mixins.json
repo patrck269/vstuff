@@ -6,7 +6,6 @@
   "mixins": [
     "ShipAssemblyMixin",
     "EncasedFanStressMixin",
-    "PropellerBearingStressMixin",
     "KineticDensityRefreshMixin"
   ],
   "injectors": {

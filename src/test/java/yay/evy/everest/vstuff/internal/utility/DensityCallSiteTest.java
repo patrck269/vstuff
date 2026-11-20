@@ -32,20 +32,6 @@ class DensityCallSiteTest {
     }
 
     @Test
-    void propellerBearingMixinScalesStress() throws Exception {
-        String source = Files.readString(Path.of(
-                "src/main/java/yay/evy/everest/vstuff/internal/mixins/PropellerBearingStressMixin.java"));
-        String config = Files.readString(Path.of("src/main/resources/vstuff.mixins.json"));
-        assertTrue(source.contains("PropellerBearingBlockEntity"));
-        assertTrue(source.contains("calculateStressApplied"));
-        assertTrue(source.contains("AirDensity.propellerStress"));
-        assertTrue(source.contains("AirDensity.ratioAt"));
-        assertTrue(!source.contains("AirDensity.scale"));
-        assertTrue(config.contains("PropellerBearingStressMixin"));
-        assertTrue(!source.contains("PropellerController"));
-    }
-
-    @Test
     void kineticDensityRefreshMixinResamplesStress() throws Exception {
         String source = Files.readString(Path.of(
                 "src/main/java/yay/evy/everest/vstuff/internal/mixins/KineticDensityRefreshMixin.java"));
@@ -53,7 +39,7 @@ class DensityCallSiteTest {
         assertTrue(source.contains("updateStressFor"));
         assertTrue(source.contains("ratioMoved"));
         assertTrue(source.contains("EncasedFanBlockEntity"));
-        assertTrue(source.contains("PropellerBearingBlockEntity"));
+        assertTrue(!config.contains("PropellerBearingStressMixin"));
         assertTrue(source.contains("MechanicalThrusterBlockEntity"));
         assertTrue(source.contains("tick"));
         assertTrue(config.contains("KineticDensityRefreshMixin"));

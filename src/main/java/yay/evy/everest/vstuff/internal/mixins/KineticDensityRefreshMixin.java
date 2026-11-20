@@ -11,14 +11,10 @@ import yay.evy.everest.vstuff.internal.utility.AirDensity;
 
 @Mixin(KineticBlockEntity.class)
 public abstract class KineticDensityRefreshMixin {
-    private static final String PROPELLER_BEARING =
-            "org.valkyrienskies.clockwork.content.contraptions.propeller.PropellerBearingBlockEntity";
-
     @Inject(method = "tick", at = @At("RETURN"), remap = false)
     private void vstuff$refreshStressWhenAirDensityMoves(CallbackInfo ci) {
         if (!((Object) this instanceof EncasedFanBlockEntity)
-                && !((Object) this instanceof MechanicalThrusterBlockEntity)
-                && !((Object) this).getClass().getName().equals(PROPELLER_BEARING)) {
+                && !((Object) this instanceof MechanicalThrusterBlockEntity)) {
             return;
         }
         KineticBlockEntity self = (KineticBlockEntity) (Object) this;
